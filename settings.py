@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "registration",
 ]
 INSTALLED_APPS+=OUR_APPS
 
@@ -125,3 +126,8 @@ MEDIA_URL = "/media/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'shrashtiagarwal2020@gmail.com'
+EMAIL_HOST_PASSWORD = "ecotltvamcuoydit"
+EMAIL_USE_TLS = True
+ACCOUNT_ACTIVATION_DAYS = 7 
