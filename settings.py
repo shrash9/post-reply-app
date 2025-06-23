@@ -29,7 +29,7 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-OUR_APPS = ['postreply']
+# OUR_APPS = ['postreply']
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -38,8 +38,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "registration",
+    "postreply"
 ]
-INSTALLED_APPS+=OUR_APPS
+# INSTALLED_APPS+=OUR_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
