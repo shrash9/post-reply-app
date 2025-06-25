@@ -135,6 +135,6 @@ ACCOUNT_ACTIVATION_DAYS = 7
 
 import os
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'templates','media')
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [ BASE_DIR / "static", ]
 

@@ -1,16 +1,26 @@
-
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
-	<title>POST REPLY</title>
-    
-	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-
+    <title>Post Reply</title>
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Raleway:400,600' rel='stylesheet' type='text/css'>
+    <link href="{% static 'css/corgi.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/elusive-webfont.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}" type="text/css" />
+    <script src="{% static 'js/jquery.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/corgi.js' %}" type="text/javascript"></script>
+    <style>
+      body {
+        padding-top: 80px; 
+      }
+    </style>
 </head>
 <body>
-	<h2>The Current user logged in is <strong>{{user}}</strong></h2>
-	{% block content %}
-	{% endblock %}
+    {% include 'navbar.html' %}
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
 </body>
 </html>

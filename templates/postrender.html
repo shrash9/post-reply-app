@@ -1,66 +1,129 @@
-<textarea id="post"></textarea>
-<input type="submit" id="ajaxpost" value="submit">
-<ul>
-    {%for p in posts%}
-        <li>{{p.post}}</li>
-    <ul>
-        {% for reply in p.reply%}
-            <li>{{reply.reply}}</li>
-    {%endfor%}
-    </ul>
-    <textarea class = "reply{{p.id}}"></textarea>
-    <input type = "submit" class = "ajaxreply" value="submit">
-    <input type = "hidden" value = "{{p.id}}">
-{%endfor%}
-</ul>
+{% load static %}
+
+<div class="container">
+  <div class="row">
+    <div class="span8">
+      <h1>Create a New Post</h1>
+      <div class="corgi_feed_well">
+        <div class="individual_feed_item">
+          <div class="feed_item">
+            <div class="feed_body">
+              <div class="row">
+                <div class="feed_profile_pic">
+                  <img src="{% static 'img/boxer.jpg' %}" alt="meta image" class="meta_image" />
+                </div>
+                <div class="feed_text">
+                  <textarea name="newpost" rows="2" cols="80" id="postdata" style="margin: 0px 0px 10px; height: 56px; width: 492px;"></textarea><br>
+                  <button class="btn btn-primary" id="ajaxpost">Post</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% for post in posts %}
+      <div class="corgi_feed_well">
+        <div class="individual_feed_item">
+          <div class="feed_item">
+            <div class="feed_body">
+              <div class="row">
+                <div class="feed_profile_pic">
+                  <img src="{% static 'img/boxer.jpg' %}" alt="meta image" class="meta_image" />
+                </div>
+                <div class="feed_text">
+                  <p>{{ post.post }}</p>
+                </div>
+              </div>
+            </div>
+           
+            {% for reply in post.reply %}
+            <div class="feed_stacked last_feed_item offset1">
+              <div class="feed_item">
+                <div class="feed_body">
+                  <div class="row">
+                    <div class="feed_profile_pic">
+                      <img src="{% static 'img/retriever.jpg' %}" alt="meta image" class="meta_image" />
+                    </div>
+                    <div class="feed_text">
+                      <p>{{ reply.reply }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+            
+            <div class="comment_area" id="showme{{post.id}}">
+              <p>Add a comment</p>
+              <textarea rows="3" class="span6 reply_data{{ post.id }}"></textarea><br/>
+              <input type="submit" class="btn reply_id" />
+              <input type="hidden" value="{{ post.id }}" class="postid">
+            </div>
+            <hr class="feed_hr" />
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+  </div>
+</div>
 
 <script>
 $(document).ready(function() {
-    function reloadPosts(){
-        $.ajax({
-            url:'/getdata/',
-            type:'GET',
-            dataType: 'html',
-            success: function(html){
-                $('.append').html(html);
-            } 
-        });
-    }
-    $('#ajaxpost').click(function() {
-        var post = $('#post').val();
-        var data = {'post_data': post}
-        $.ajax({
-            url: '/add/',
-            type: 'POST',
-            data: data,
-            success: function(response) {
-                if(response == 'True') {
-                    alert('Post saved');
-                    reloadPosts();
-                }
-            }
-        });
+  function callme() {
+    $.ajax({
+      url: "/getdata/",
+      type: "GET",
+      dataType: 'html',
+      success: function(html) {
+        $('.append').html(html);
+      },
+      error: function() { }
     });
+  }
 
-    $(document).on('click','.ajaxreply',function(e){
-        e.preventDefault();
-        var post_id = $(this).next().val();
-        var reply = $('.reply' + post_id).val();
-        var data = {
-            'reply_data':reply,
-            'postid':post_id
-        };
-        $.ajax({
-            url: '/reply/',
-            type: 'POST',
-            data: data,
-            success: function(response){
-                if(response=="True"){
-                    alert('Reply saved');
-                    reloadPosts();
-                }
-            }
-        })
+  $("#ajaxpost").click(function() {
+    var post_data = $("#postdata").val();
+    var data = {
+      "post_data": post_data,
+    };
+    $.ajax({
+      url: "/add/",
+      type: "POST",
+      data: data,
+      success: function(response) {
+        if (response == "True") {
+          callme();
+        }
+      },
+      error: function() { }
     });
+  });
+
+  $(document).on('click', '.reply_id', function() {
+    var postid = $(this).next().val();
+    var reply_data = $(".reply_data" + postid).val();
+    var datas = {
+      "reply_data": reply_data,
+      "postid": postid,
+    };
+    $.ajax({
+      url: "/reply/",
+      type: "POST",
+      data: datas,
+      success: function(response) {
+        if (response == "True") {
+          callme();
+        }
+      },
+      error: function() { alert("error"); }
+    });
+  });
 });
+
+function clickme(id) {
+  $('#showme' + id).toggle();
+}
 </script>
