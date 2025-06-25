@@ -1,0 +1,21 @@
+<textarea id="post"></textarea>
+<input type="submit" id="ajaxpost" value="submit">
+
+<script>
+$(document).ready(function() {
+    $('#ajaxpost').click(function() {
+        var post = $('#post').val();
+        var data = {'post_data': post}
+        $.ajax({
+            url: '/add/',
+            type: 'POST',
+            data: data,
+            success: function(response) {
+                if(response == 'True') {
+                    alert('Post saved');
+                }
+            }
+        });
+    });
+});
+</script>

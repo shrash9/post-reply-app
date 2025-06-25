@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="append"></div>
+<script>
+$(document).ready(function(){
+    $.ajax({
+        url: '/getdata/',
+        dataType: 'html',
+        type: 'GET',
+        success: function(html){
+            $('.append').html(html);
+        }
+    });
+});
+</script>
+{% endblock %}
