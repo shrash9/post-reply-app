@@ -1,8 +1,31 @@
 <textarea id="post"></textarea>
 <input type="submit" id="ajaxpost" value="submit">
+<ul>
+    {%for p in posts%}
+        <li>{{p.post}}</li>
+    <ul>
+        {% for reply in p.reply%}
+            <li>{{reply.reply}}</li>
+    {%endfor%}
+    </ul>
+    <textarea class = "reply{{p.id}}"></textarea>
+    <input type = "submit" class = "ajaxreply" value="submit">
+    <input type = "hidden" value = "{{p.id}}">
+{%endfor%}
+</ul>
 
 <script>
 $(document).ready(function() {
+    function reloadPosts(){
+        $.ajax({
+            url:'/getdata/',
+            type:'GET',
+            dataType: 'html',
+            success: function(html){
+                $('.append').html(html);
+            } 
+        });
+    }
     $('#ajaxpost').click(function() {
         var post = $('#post').val();
         var data = {'post_data': post}
@@ -13,9 +36,31 @@ $(document).ready(function() {
             success: function(response) {
                 if(response == 'True') {
                     alert('Post saved');
+                    reloadPosts();
                 }
             }
         });
+    });
+
+    $(document).on('click','.ajaxreply',function(e){
+        e.preventDefault();
+        var post_id = $(this).next().val();
+        var reply = $('.reply' + post_id).val();
+        var data = {
+            'reply_data':reply,
+            'postid':post_id
+        };
+        $.ajax({
+            url: '/reply/',
+            type: 'POST',
+            data: data,
+            success: function(response){
+                if(response=="True"){
+                    alert('Reply saved');
+                    reloadPosts();
+                }
+            }
+        })
     });
 });
 </script>
