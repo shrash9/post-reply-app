@@ -132,3 +132,9 @@ EMAIL_HOST_USER = 'shrashtiagarwal2020@gmail.com'
 EMAIL_HOST_PASSWORD = "ecotltvamcuoydit"
 EMAIL_USE_TLS = True
 ACCOUNT_ACTIVATION_DAYS = 7 
+
+import os
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'templates','media')
+
