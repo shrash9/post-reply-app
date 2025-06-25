@@ -34,13 +34,13 @@ def getdata(request):
         rep.reply = reply
     html = render_to_string('postrender.html', {'posts': posts})
     return HttpResponse(html)
-
+@csrf_exempt
 def addreply(request):
     if request.method == "POST":
         data = request.POST['reply_data']
         data_id = request.POST['postid']
         repost = Post.objects.get(id= int (data_id))
-        reply = Reply(user = request.user, post = repost, reply= data, posted_data = timezone.now())
+        reply = Reply(user = request.user, post = repost, reply= data, posted_date = timezone.now())
         reply.save()
         return HttpResponse("True")
     return HttpResponse("False")
